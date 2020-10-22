@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import {
   TouchableWithoutFeedback,
-  Alert,
   TouchableOpacity,
   View,
   Image,
@@ -12,7 +11,7 @@ import {
 
 import styles from './styles';
 import codbarra from '../../assets/codigodebarras.png';
-import api from '../../services/api';
+import Product from '../../classes/product';
 import { DefaultButton } from '../../components';
 
 export default function Home({ go, response }) {
@@ -20,17 +19,8 @@ export default function Home({ go, response }) {
   const [codigo, setCodigo] = useState('');
   const inputCode = useRef(null);
 
-  async function getProduct(param) {
-    try {
-      const { data } = await api.get(`/supernet/produtos/${param}`);
-      return data;
-    } catch (error) {
-      return null;
-    }
-  }
-
   async function pressSearch(code) {
-    const product = await getProduct(code || codigo);
+    const product = await Product.getRequest(code || codigo);
     if (product) go('Validation', { product });
     else {
       setCodigo('');
@@ -46,7 +36,7 @@ export default function Home({ go, response }) {
           <TouchableOpacity
             style={styles.btnCodbarra}
             onPress={() => {
-              Alert.alert('Abrir Câmera');
+              go('Camera');
             }}
           >
             <Image style={styles.logo} source={codbarra} />

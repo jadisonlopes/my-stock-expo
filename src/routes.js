@@ -4,6 +4,7 @@ import { ScrollView, Platform, KeyboardAvoidingView } from 'react-native';
 import Logon from './pages/Logon';
 import Home from './pages/Home';
 import Validation from './pages/Validation';
+import Camera from './pages/Camera';
 
 export default function Routes() {
   const [href, setHref] = useState('Logon');
@@ -18,26 +19,28 @@ export default function Routes() {
     setHref(value);
   }
 
-  const Component = () => {
-    switch (href) {
-      case 'Home':
-        return <Home go={goNavigation} response={response} />;
-      case 'Validation':
-        return <Validation go={goNavigation} response={response} />;
-      default:
-        return <Logon go={goNavigation} response={response} />;
-    }
-  };
-
-  if (Platform.OS === 'ios')
+  function TypePlatform(children) {
+    if (Platform.OS === 'ios')
+      return (
+        <KeyboardAvoidingView style={{ flex: 1 }} behavior="position">
+          {children}
+        </KeyboardAvoidingView>
+      );
     return (
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior="position">
-        <Component />
-      </KeyboardAvoidingView>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        {children}
+      </ScrollView>
     );
-  return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <Component />
-    </ScrollView>
-  );
+  }
+
+  switch (href) {
+    case 'Home':
+      return TypePlatform(<Home go={goNavigation} response={response} />);
+    case 'Validation':
+      return TypePlatform(<Validation go={goNavigation} response={response} />);
+    case 'Camera':
+      return <Camera go={goNavigation} response={response} />;
+    default:
+      return TypePlatform(<Logon go={goNavigation} response={response} />);
+  }
 }
