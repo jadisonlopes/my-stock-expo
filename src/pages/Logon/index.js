@@ -11,6 +11,7 @@ import {
 import styles from './styles';
 import api from '../../services/api';
 import { DefaultButton } from '../../components';
+import env from '../../assets/env';
 
 export default function Logon({ go }) {
   const [user, setUser] = useState('');
@@ -37,7 +38,7 @@ export default function Logon({ go }) {
   }
 
   function validPassword(value) {
-    return value === process.env.PASS_APP;
+    return value === env.PASSWORD;
   }
 
   async function validUser() {
