@@ -19,7 +19,7 @@ My Stock</h1>
 
 ## :rocket: Technologies
 
-- [ReactJS](https://reactjs.org/)
+- [React-Native](https://reactnative.dev/)
 - [Expo](https://Expo.io/)
 - [Axios](https://github.com/axios/axios)
 - [VS Code][vscode] with [EditorConfig][vceditconfig] and [ESLint][vceslint]
