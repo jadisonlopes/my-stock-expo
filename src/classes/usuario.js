@@ -1,23 +1,25 @@
 import api from '../services/api';
 
 class Usuario {
-  permitted = async (value) => {
+  static async permitted(name) {
     try {
-      const { data } = await api.get(`/usuario/permitido/${value}`);
+      const { data } = await api.get(`/usuario/permitido/${name}`);
       return !!data;
     } catch (error) {
       return false;
     }
-  };
+  }
 
-  getRequest = async (name) => {
+  static async logon(name, password) {
     try {
-      const { data } = await api.get(`/usuario/${name}`);
+      const { data } = await api.get(`/usuario/acesso/${name}`, {
+        params: { senha: password },
+      });
       return !!data;
     } catch (error) {
       return false;
     }
-  };
+  }
 }
 
-export default new Usuario();
+export default Usuario;

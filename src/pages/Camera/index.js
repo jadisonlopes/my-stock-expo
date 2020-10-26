@@ -17,7 +17,7 @@ export default function App({ go }) {
   }, []);
 
   async function pressSearch(code) {
-    const product = await Product.getRequest(code);
+    const product = await Product.request(code);
     if (product) go('Validation', { product });
     else Alert.alert('Produto não encontrado!');
   }

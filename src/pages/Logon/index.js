@@ -11,7 +11,6 @@ import {
 import styles from './styles';
 import Usuario from '../../classes/usuario';
 import { DefaultButton } from '../../components';
-import env from '../../assets/env';
 
 export default function Logon({ go }) {
   const [user, setUser] = useState('');
@@ -20,25 +19,22 @@ export default function Logon({ go }) {
   const inputPassword = useRef(null);
   const inputName = useRef(null);
 
-  async function userExists(name) {
-    const exists = await Usuario.getRequest(name);
-    return exists;
-  }
-
-  async function userPermitted(value) {
-    const permitted = await Usuario.permitted(value);
+  async function userPermitted(name) {
+    const permitted = await Usuario.permitted(name);
     return permitted;
   }
 
-  function validPassword(value) {
-    return value === env.PASSWORD;
+  async function logon(nameUser, passwordUser) {
+    const valid = await Usuario.logon(nameUser, passwordUser);
+    return valid;
   }
 
   async function validUser() {
-    if (user.length < 1) return;
-    if (!(await userExists(user))) {
-      Alert.alert('Usuário não existe!');
-    } else if (!(await userPermitted(user))) {
+    const userEmpty = user.length < 1;
+    if (userEmpty) return;
+
+    const userNotPermitted = !(await userPermitted(user));
+    if (userNotPermitted) {
       Alert.alert('Usuário não permitido!');
     } else {
       setEnablePassword(true);
@@ -47,8 +43,11 @@ export default function Logon({ go }) {
   }
 
   async function pressBegin() {
-    if (password.length < 1) return;
-    if (!validPassword(password)) {
+    const passwordEmpty = password.length < 1;
+    if (passwordEmpty) return;
+
+    const notValidLogon = !(await logon(user, password));
+    if (notValidLogon) {
       Alert.alert('Senha inválida!');
     } else go('Home', { user });
   }

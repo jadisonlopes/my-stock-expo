@@ -20,7 +20,7 @@ export default function Home({ go, response }) {
   const inputCode = useRef(null);
 
   async function pressSearch(code) {
-    const product = await Product.getRequest(code || codigo);
+    const product = await Product.request(code || codigo);
     if (product) go('Validation', { product });
     else {
       setCodigo('');
